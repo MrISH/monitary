@@ -1,0 +1,28 @@
+table {
+  width: 100%;
+
+  th, td {
+    text-align: center;
+  }
+}
+
+.new-button {
+    float: right;
+}
+
+ul.transactions {
+  text-align: center;
+}
+
+ul.transactions li {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+  border: 1px dotted grey;
+  border-radius: 5px;
+  width: 100%;
+}
+
+p.alert {
+  color: $brand-danger;
+}

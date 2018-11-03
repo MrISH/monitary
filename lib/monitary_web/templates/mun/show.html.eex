@@ -1,0 +1,39 @@
+<a href="<%= mun_path(@conn, :index) %>"><< Muns</a>
+
+<h2>Mun: <%= @mun.name %> (#<%= @mun.id %>)</h2>
+
+<ul class="mun">
+
+  <li>
+    Name:
+    <%= @mun.name %>
+  </li>
+
+  <li>
+    Description:
+    <%= @mun.description %>
+  </li>
+
+</ul>
+
+<h3>Transactions</h3>
+<span class="new-button">
+  <a href="<%= mun_transaction_path(@conn, :new, @mun) %>">New Transaction</a>
+</span>
+
+<ul class="transactions">
+
+  <%= for transaction <- @transactions do %>
+
+    <li>
+      <%= transaction.id %> |
+      <%= currencify(transaction.amount_in_cents) %> |
+      <%= transaction.settlement_date %> |
+      <%= classify(transaction) %> |
+      <%= source_name(transaction.source_id) %> |
+      <a href="<%= mun_transaction_item_path(@conn, :index, @mun, transaction) %>">Items</a>
+    </li>
+
+  <% end %>
+
+</ul

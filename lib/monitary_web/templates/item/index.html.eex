@@ -1,0 +1,31 @@
+<a href="<%= mun_transaction_path(@conn, :index, @mun) %>"><< Transaction</a>
+
+<h2><%= @mun.name %> (#<%= @mun.id %>) Transaction #<%= @transaction.id %> Item</h2>
+
+<table>
+
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Amount in Cents</th>
+      <th>Quantity</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for transaction_item <- @transaction_items do %>
+
+      <tr>
+        <td><%= transaction_item.id %></td>
+        <td><%= item_name(transaction_item) %></td>
+        <td><%= transaction_item.amount_in_cents %></td>
+        <td><%= transaction_item.quantity %></td>
+        <td></td>
+      </tr>
+
+    <% end %>
+  </tbody>
+
+</table>

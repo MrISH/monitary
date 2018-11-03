@@ -1,0 +1,35 @@
+<a href="<%= mun_path(@conn, :show, @mun) %>"><< Mun</a>
+
+<h2><%= @mun.name %> (#<%= @mun.id %>) Transactions</h2>
+
+<table>
+
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Amount</th>
+      <th>Settlement Date</th>
+      <th>Classification</th>
+      <th>Source</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for transaction <- @transactions do %>
+
+      <tr>
+        <td><%= transaction.id %></td>
+        <td><%= currencify(transaction.amount_in_cents) %></td>
+        <td><%= transaction.settlement_date %></td>
+        <td><%= classify(transaction) %></td>
+        <td><%= source_name(transaction.source_id) %></td>
+        <td>
+          <a href="<%= mun_transaction_item_path(@conn, :index, @mun, transaction) %>">Items</a>
+        </td>
+      </tr>
+
+    <% end %>
+  </tbody>
+
+</table>
