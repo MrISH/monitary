@@ -3,6 +3,7 @@ defmodule MonitaryWeb.UserSocket do
 
   ## Channels
   channel "mun:*", MonitaryWeb.MunChannel
+  channel "transaction:*", MonitaryWeb.TransactionChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

@@ -5,7 +5,8 @@ defmodule MonitaryWeb.MunView do
   alias Monitary.Source
 
   defp classify(transaction) do
-    %{1 => "Incoming", 2 => "Outgoing"}[transaction.classification]
+    %{ 1 => "Incoming", 2 => "Outgoing" }
+    |> Map.get(transaction.classification)
   end
 
   defp currencify(cents) do

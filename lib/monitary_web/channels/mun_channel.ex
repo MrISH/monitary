@@ -1,16 +1,22 @@
 defmodule MonitaryWeb.MunChannel do
   use Phoenix.Channel
 
-  alias Monitary.Repo
-  alias Monitary.Mun
+  alias Monitary.{
+    Mun,
+    Repo
+  }
 
-  def join("mun:index", params, socket) do
+  def join("mun:index", _params, socket) do
     {:ok, socket}
   end
 
   def handle_in("mun:create", %{ "mun" => mun }, socket) do
     # Do a create
-    mun_struct = %Mun{ user_id: socket.assigns[:user].id, name: mun["name"], description: mun["description"] }
+    mun_struct = %Mun{
+      user_id:      socket.assigns[:user].id,
+      name:         mun["name"],
+      description:  mun["description"]
+    }
     changeset  = Mun.change_mun(mun_struct)
     # Respond with love
     case Repo.insert(changeset) do
@@ -25,9 +31,9 @@ defmodule MonitaryWeb.MunChannel do
 
   def handle_in("mun:delete", %{ "id" => id }, socket) do
     mun = Repo.get!(Mun, id)
-    
+
     case Repo.delete(mun) do
-      {:ok, mun} ->
+      {:ok, _mun} ->
         # Send data to channel for rendering
         broadcast!(socket, "mun:delete", %{id: id})
         {:reply, {:ok, %{id: id}}, socket}

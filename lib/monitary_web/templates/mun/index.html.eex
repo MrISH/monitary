@@ -1,6 +1,4 @@
 <span class="new-button">
-  <!-- <%= link "New Mun", to: mun_path(@conn, :new), method: :get %> -->
-  <!-- <%= link "New Mun", to: {:javascript, ''}, method: :get, class: "new-mun" %> -->
   <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createMunModal">
     New Mun
   </button>
@@ -45,7 +43,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h2 class="modal-title" id="exampleModalLongTitle">Create new Mun</h2>
+        <h2 class="modal-title" id="createMunModalTitle">Create new Mun</h2>
       </div>
 
       <%= form_for @changeset, @action, fn f -> %>

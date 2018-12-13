@@ -83,7 +83,7 @@ Provide forecasts and suggestions based on history.
   alias Monitary.Source
   alias Monitary.Transaction
   alias Monitary.Item
-  alias Monitary.TransactionsItems
+  alias Monitary.TransactionsItem
 
   Repo.all(User)
   Repo.insert(%User{username: "ish", password: "password"})
@@ -102,7 +102,7 @@ Provide forecasts and suggestions based on history.
   Repo.insert(%Item{name: "Milk", user_id: current_user.id})
   item = Repo.get(Item, 1)
 
-  Repo.insert(%TransactionsItems{transaction_id: transaction.id, item_id: item.id, user_id: current_user.id, amount_in_cents: 200, quantity: 1})
+  Repo.insert(%TransactionItem{transaction_id: transaction.id, item_id: item.id, user_id: current_user.id, amount_in_cents: 200, quantity: 1})
 
 ```
 

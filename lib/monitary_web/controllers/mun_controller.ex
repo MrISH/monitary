@@ -2,11 +2,17 @@ defmodule MonitaryWeb.MunController do
   use MonitaryWeb, :controller
 
   alias Monitary.Repo
-  alias Monitary.Mun
+  alias Monitary.{
+    Mun,
+    Source,
+    Transaction,
+    TransactionItem,
+  }
 
-  def delete(conn, %{ "id" => id }) do
-    {id, _} = Integer.parse(id)
-
+  def delete(_conn, %{ "id" => id }) do
+    # Find user, find user's muns, then delete if all good
+    # Probably unneccesary because all stuff is done in muns channel
+    {_id, _} = Integer.parse(id)
   end
 
   def edit(conn, %{ "id" => id }) do
@@ -15,7 +21,11 @@ defmodule MonitaryWeb.MunController do
     changeset = Mun.change_mun(mun)
 
     conn
-      |> render("edit.html", changeset: changeset, action: mun_path(conn, :update, mun), mun: mun)
+      |> render("edit.html",
+        changeset:  changeset,
+        action:     mun_path(conn, :update, mun),
+        mun:        mun
+      )
   end
 
   def index(conn, _params) do
@@ -25,16 +35,29 @@ defmodule MonitaryWeb.MunController do
     conn
       |> put_flash(:info, "Welcome to Muns!, #{ current_user(conn).username }")
       |> render("index.html", muns: muns, changeset: changeset, action: "javascript:;")
-      # |> render("index.html", muns: muns, changeset: changeset, action: mun_path(conn, :create))
   end
 
   def show(conn, %{ "id" => id }) do
-    {id, _}   = Integer.parse(id)
-    mun       = Repo.get_by(Mun, %{ id: id, user_id: current_user(conn).id })
+    {id, _}      = Integer.parse(id)
+    mun          = Repo.get_by(Mun, %{ id: id, user_id: current_user(conn).id })
     transactions = Repo.all Ecto.assoc(mun, :transactions)
+    changeset    = Transaction.change_transaction(%Transaction{})
+    ti_changeset = TransactionItem.change_transaction(%TransactionItem{})
+
+    sources      =
+      Source
+      |> Repo.all()
+      |> Enum.map(fn s -> [key: s.name, value: s.id] end)
 
     conn
-      |> render("show.html", mun: mun, transactions: transactions)
+      |> render("show.html",
+        mun:          mun,
+        transactions: transactions,
+        sources:      sources,
+        changeset:    changeset,
+        ti_changeset: ti_changeset,
+        action:       "javascript:;"
+      )
   end
 
   def update(conn, %{ "id" => id, "mun" => %{ "name" => name, "description" => description } }) do
@@ -49,7 +72,12 @@ defmodule MonitaryWeb.MunController do
           |> put_flash(:info, "#{ mun.name } updated successfully!")
           |> redirect(to: mun_path(conn, :show, mun))
       {:error, changeset} ->
-        render conn, "edit.html", changeset: changeset, action: mun_path(conn, :update, mun), mun: mun
+        conn
+        |> render("edit.html",
+          changeset:  changeset,
+          action:     mun_path(conn, :update, mun),
+          mun:        mun
+        )
     end
   end
 
